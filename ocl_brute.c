@@ -1,10 +1,13 @@
 
 #include <stdio.h>
+#include <time.h>
 #include "utils.h"
 #include "crypto.h"
 #include "ocl.h"
 #include "dsi.h"
 #include "ocl_brute.h"
+
+typedef int s32;
 
 // 123 -> 0x123
 static cl_ulong to_bcd(cl_ulong i) {
@@ -313,7 +316,7 @@ int ocl_brute_emmc_cid(const cl_uchar *console_id, cl_uchar *emmc_cid,
  * https://gbatemp.net/threads/eol-is-lol-the-34c3-talk-for-3ds-that-never-was.494698/
  * what I'm doing here is simply brute the 3rd u32 of a u128 so that the first half of sha256 matches ver
  */
-int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver)
+int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 {
 	TimeHP t0, t1; long long td = 0;
 
@@ -364,14 +367,15 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver)
 	OCL_ASSERT(clSetKernelArg(kernel, 8, sizeof(cl_mem), &mem_out));
 	get_hp_time(&t0);
 	int msky3_range = 16384; // "fan out" +/-8192 on msky3
-	unsigned i, j;
-	for (j = 0; j < msky3_range; ++j) {
-		cl_uint msky3 = msky[3] + (j & 1 ? 1 : -1) * ((j + 1) >> 1);
-		printf("%08x\r", msky3);
-		OCL_ASSERT(clSetKernelArg(kernel, 3, sizeof(cl_uint), &msky3));
+	unsigned i, j, k=0;
+	for (j = msky_offset; j < msky3_range; ++j) {
+		int msky3_offset = (j & 1 ? 1 : -1) * ((j + 1) >> 1);
+		cl_uint msky3 = msky[3] + msky3_offset;
+		printf("msed3:%08x offset:%d    \r", msky3, msky3_offset);
 		for (i = 0; i < loops; ++i) {
 			cl_uint msky2 = i << group_bits;
 			OCL_ASSERT(clSetKernelArg(kernel, 2, sizeof(cl_uint), &msky2));
+			OCL_ASSERT(clSetKernelArg(kernel, 3, sizeof(cl_uint), &msky3));
 
 			OCL_ASSERT(clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &num_items, &local, 0, NULL, NULL));
 			clFinish(command_queue);
@@ -381,19 +385,45 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver)
 				get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
 				cl_uint msky_ret[4] = { msky[0], msky[1], out, msky3 };
 				printf("got a hit: %s\n", hexdump(msky_ret, 16, 0));
+				u8 msed[0x140]={0};
+				memcpy(&msed[0x110], msky_ret, 16);
+				dump_to_file("movable.sed", msed, 0x140);
+				printf("movable.sed dumped to file!\n");
+				struct msed_data{
+					u32 lfcs_blk;
+					s32 msed3offset;
+					u32 seedtype;
+				} mdata;
+				srand(time(NULL));
+				u32 rnd=rand();
+				char filename[0x100]={0};
+				u32 lfcs=msky[0];
+				u32 lfcs_blk=lfcs >> 12;
+				u32 msed3=msky3;
+				s32 msed3offset=(lfcs/5)-(msed3&0x7FFFFFFF);
+				u32 seedtype=(msed3&0x80000000)>>31;
+				mdata.lfcs_blk=lfcs_blk;
+				mdata.msed3offset=msed3offset;
+				mdata.seedtype=seedtype;
+				snprintf(filename, 0x100, "msed_data_%08X.bin", rnd);
+				printf("msed_data will also be written to\n%s\n",filename);
+				printf("please share if you can!\n\n");
+				dump_to_file(filename, &mdata, 12);
+				printf("done.\n");
 				break;
 			}
 		}
 		if (out) {
 			break;
 		}
+		k++;
 	}
 	u64 tested = 0;
 	if (!out) {
-		tested = (1ull << brute_bits) * msky3_range;
+		tested = (1ull << brute_bits) * k;
 		get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
 	} else {
-		tested = out + (1ull << brute_bits) * j;
+		tested = out + (1ull << brute_bits) * k;
 	}
 	printf("%.2f seconds, %.2f M/s\n", td / 1000000.0, tested * 1.0 / td);
 
@@ -406,7 +436,7 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver)
 }
 
 // LFCS brute force, https://gist.github.com/zoogie/4046726878dba89eddfa1fc07c8a27da
-int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver)
+int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver, cl_uint lfcs_offset)
 {
 	TimeHP t0, t1; long long td = 0;
 
@@ -454,9 +484,25 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver)
 	OCL_ASSERT(clSetKernelArg(kernel, 4, sizeof(cl_mem), &mem_out));
 	get_hp_time(&t0);
 	int fan_range = 0x10000; // "fan out" full 16 bits
-	unsigned i, j;
-	for (j = 0; j < fan_range; ++j) {
+	unsigned i, j,k=0;
+	int upper_bound = newflag ? 0x05000000>>16 : 0x0B000000>>16;  //these upper bounds are safe bets now, but that may
+	int lower_bound = 0;                                          //change as time passes. will need to update
+	//lfcs_template=0;  //debug
+	u32 lfcs_block = lfcs_template>>16;
+	for (j = lfcs_offset; j < fan_range; ++j) {
 		int fan = (j & 1 ? 1 : -1) * ((j + 1) >> 1);
+
+		if(fan > 0){                                         //check to see if bf exhausted in both directions, quit if so
+			if( lfcs_block + fan  > upper_bound  &&  (int)lfcs_block - fan < lower_bound){ 
+				printf("Exhausted all possible lfcs combinations, exiting ...\n\n");
+				break;
+			}
+			if(lfcs_block + fan > upper_bound) continue;     //check to see if bf exhausted in + direction, skip iteration if so
+		}
+		else{
+			if((int)lfcs_block + fan < lower_bound) continue;//check to see if bf exhausted in - direction, skip iteration if so
+		}
+
 		printf("%d \r", fan);
 		for (i = 0; i < loops; ++i) {
 			cl_uint lfcs = lfcs_template + fan * 0x10000 + (i << (group_bits - 16));
@@ -470,19 +516,29 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver)
 				get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
 				lfcs += out >> 16;
 				printf("got a hit: %s (rand: 0x%04x)\n", hexdump(&lfcs, 4, 0), out & 0xffff);
+				u8 part1[0x1000]={0};
+				memcpy(part1, &lfcs, 4);
+				memcpy(part1+4, &newflag, 2);
+				dump_to_file("movable_part1.sed", part1, 0x1000);
+				printf("movable_part1.sed dumped to file\n");
+				printf("don't you dare forget to add the id0 to it!\n");
+				printf("done.\n\n");
 				break;
 			}
+
 		}
+		
 		if (out) {
 			break;
 		}
+		k++;
 	}
 	u64 tested = 0;
 	if (!out) {
-		tested = (1ull << brute_bits) * fan_range;
+		tested = (1ull << brute_bits) * k;
 		get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
 	} else {
-		tested = out + (1ull << brute_bits) * j;
+		tested = out + (1ull << brute_bits) * k;
 	}
 	printf("%.2f seconds, %.2f M/s\n", td / 1000000.0, tested * 1.0 / td);
 
