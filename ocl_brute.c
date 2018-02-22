@@ -519,9 +519,19 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 				u8 part1[0x1000]={0};
 				memcpy(part1, &lfcs, 4);
 				memcpy(part1+4, &newflag, 2);
-				dump_to_file("movable_part1.sed", part1, 0x1000);
-				printf("movable_part1.sed dumped to file\n");
-				printf("don't you dare forget to add the id0 to it!\n");
+				FILE *f=fopen("movable_part1.sed","rb+");
+				if(f){
+					printf("existing movable_part1.sed found, adding lfcs...\n");
+					fwrite(part1, 1, 8, f);
+					fclose(f);
+				}
+				else{
+					printf("movable_part1.sed not found, generating a new one...\n");
+					dump_to_file("movable_part1.sed", part1, 0x1000);
+					printf("movable_part1.sed dumped to file\n");
+					printf("don't you dare forget to add the id0 to it!\n");
+				}
+			
 				printf("done.\n\n");
 				break;
 			}
