@@ -87,9 +87,6 @@ int main(int argc, const char *argv[]) {
 		printf(invalid_parameters);
 		ret = -1;
 	}
-#ifdef _WIN32
-	if(argc != 6) system("pause");
-#endif
 	return ret;
 }
 
