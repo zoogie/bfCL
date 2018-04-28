@@ -1,3 +1,4 @@
+
 __kernel void test_lfcs(
 	u32 lfcs, u16 newflag,
 	u32 v0, u32 v1,
@@ -22,3 +23,4 @@ __kernel void test_lfcs(
 		*out = gid;
 	}
 }
+
