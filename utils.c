@@ -81,9 +81,9 @@ void get_hp_time(struct timeval *pt) {
 }
 
 long long hp_time_diff(struct timeval *pt0, struct timeval *pt1) {
-	long long diff = pt1.tv_sec - pt0.tv_sec;
+	long long diff = pt1->tv_sec - pt0->tv_sec;
 	diff *= 1000000;
-	diff += pt1.tv_usec - pt0.tv_usec;
+	diff += pt1->tv_usec - pt0->tv_usec;
 	return diff;
 }
 
@@ -100,7 +100,7 @@ char * read_file(const char *file_name, size_t *p_size) {
 	*p_size = ftell(f);
 	char * buf = malloc(*p_size);
 	fseek(f, 0, SEEK_SET);
-	fread(buf, *p_size, 1, f);
+	if (fread(buf, *p_size, 1, f) != 1) { fprintf(stderr, "error durring fread"); };
 	fclose(f);
 	return buf;
 }
