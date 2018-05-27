@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -176,4 +175,3 @@ char * trim(char *in) {
 	}
 	return first_non_ws;
 }
-

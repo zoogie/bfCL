@@ -1,4 +1,3 @@
-
 // more about this: https://github.com/Jimmy-Z/TWLbf/blob/master/dsi.c
 
 __constant static const u64 DSi_KEY_Y[2] =
@@ -70,4 +69,3 @@ inline void dsi_make_key(u64 *key, u64 console_id){
 	}
 	rol42_128(key);
 }
-

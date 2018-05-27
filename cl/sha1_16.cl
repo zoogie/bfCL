@@ -1,4 +1,3 @@
-
 // sha1_16 adapted for OpenCL, see "sha1_16.c" for more information
 
 void sha1_16(unsigned char *io)
@@ -153,4 +152,3 @@ void sha1_16(unsigned char *io)
 	PUT_UINT32_BE(C, io, 8);
 	PUT_UINT32_BE(D, io, 12);
 }
-

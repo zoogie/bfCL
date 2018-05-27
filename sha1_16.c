@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 
 /* sha1_16
@@ -184,4 +183,3 @@ void sha1_16(const unsigned char in[16], unsigned char out[16]) {
 	PUT_UINT32_BE(C, out, 8);
 	PUT_UINT32_BE(D, out, 12);
 }
-
