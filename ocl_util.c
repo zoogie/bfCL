@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <CL/cl_ext.h>
 #include "ocl.h"
 #include "utils.h"
@@ -243,4 +243,3 @@ cl_program ocl_build_from_sources(
 	free(source_sizes);
 	return program;
 }
-
