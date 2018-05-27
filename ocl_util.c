@@ -2,7 +2,11 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#ifdef __APPLE__
+#include <OpenCL/cl_ext.h>
+#else
 #include <CL/cl_ext.h>
+#endif
 #include "ocl.h"
 #include "utils.h"
 
@@ -28,8 +32,11 @@ const char * ocl_err_msg(cl_int error_code) {
 		return "out of resources";
 	case CL_OUT_OF_HOST_MEMORY:
 		return "out of host memory";
+	/* Apple's OpenCL implementation for some reason doesn't have the following identifier declared. */
+	#ifndef __APPLE__
 	case CL_PLATFORM_NOT_FOUND_KHR:
 		return "platform not found";
+	#endif
 	case CL_INVALID_WORK_GROUP_SIZE:
 		return "invalid work group size";
 	default:
