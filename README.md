@@ -8,6 +8,7 @@ Note: If you really want to use Virtual Studio 2017, you're going to probably ha
 * **A 64-bit computer**
 * [MSYS2](http://www.msys2.org/) (the x86_64 executable; **read its instructions on installing and setting up**)
 * An `OpenCL.dll` or `OpenCL.lib` 64-bit library
+
 Note: `OpenCL.dll` can be found inside of your `C:\Windows\System32\` folder, but you may have to install your graphics card's drivers from your graphics card's vendor if it's not there.
 You can alternatively install [Intel's OpenCL SDK](https://software.intel.com/intel-opencl/), but this requires you to agree to their TOS and takes up more space on your computer.
 #### Instructions for compiling with MSYS2
