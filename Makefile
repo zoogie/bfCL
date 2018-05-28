@@ -1,11 +1,12 @@
 PNAME = bfcl
 OBJS = $(PNAME).o ocl_util.o utils.o sha1_16.o aes_128.o ocl_test.o ocl_brute.o
 ifdef SYSTEMROOT
+	# I specified the environmental variable Intel's OpenCL SDK installer sets on Windows.
 	CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd -I$(INTELOCLSDKROOT)\include
 	LDFLAGS += -L$(INTELOCLSDKROOT)\lib\x64
 else
 	ifeq ($(shell uname), Linux)
-		# I directly specified the deafult location the installer installs to on Linux.
+		# I directly specified the deafult location the installer installs to on Linux since no environment variable is set.
 		CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd -I/opt/intel/opencl-sdk/include
 		LDFLAGS += -L/opt/intel/opencl-sdk/lib64
 	endif
@@ -20,10 +21,10 @@ all: $(PNAME)
 $(PNAME): $(OBJS)
 ifeq ($(shell uname), Darwin)
 	$(CC) $(LDFLAGS) -o $@ $^ -framework OpenCL -lmbedcrypto
-#                                             ^__________^ If you want to use the static library instead, change this all to "-l/usr/local/lib/libmbedcrypto.a" without the quotes.
+# If you want to use the static library instead, change "-lmbedcrypto" to "-l/usr/local/lib/libmbedcrypto.a" without the quotes.
 else
 	$(CC) $(LDFLAGS) -o $@ $^ -lOpenCL -lmbedcrypto
-#                                    ^__________^ If you want to use the static library instead, change this all to "-l:libmbedcrypto.a" without the quotes.
+# If you want to use the static library instead, change "-lmbedcrypto" to "-l:libmbedcrypto.a" without the quotes.
 endif
 
 clean:
