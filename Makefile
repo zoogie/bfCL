@@ -6,7 +6,7 @@ ifdef SYSTEMROOT
 	LDFLAGS += -L$(INTELOCLSDKROOT)\lib\x64
 else
 	ifeq ($(shell uname), Linux)
-		# Intel's OpenCL SDK installer directly specified the default location the installer installs to on Linux since no environment variable is set.
+		# Intel's OpenCL SDK installer doesn't set an environmenr variable on Linux, so we'll have to specify its default installation location instead.
 		CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd -I/opt/intel/opencl-sdk/include
 		LDFLAGS += -L/opt/intel/opencl-sdk/lib64
 	endif
@@ -25,7 +25,7 @@ ifeq ($(shell uname), Darwin)
 else
 	$(CC) $(LDFLAGS) -o $@ $^ -lOpenCL -lmbedcrypto
 # If you want to use the mbedcrypto static library instead, change "-lmbedcrypto" to "-l:libmbedcrypto.a" without the quotes.
-# Note: Ubuntu (probably Debian as well) doesn't install "libmbedcrypto.a", thus you'd have to compile mbedtls yourself.
+# Note: Ubuntu (probably Debian as well) doesn't install "libmbedcrypto.a" through apt-get, thus you'd have to compile mbedtls yourself.
 endif
 
 clean:
