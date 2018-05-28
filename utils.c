@@ -92,14 +92,17 @@ long long hp_time_diff(struct timeval *pt0, struct timeval *pt1) {
 char * read_file(const char *file_name, size_t *p_size) {
 	FILE * f = fopen(file_name, "rb");
 	if (f == NULL) {
-		fprintf(stderr, "can't read file: %s", file_name);
+		fprintf(stderr, "can't read file: %s\n", file_name);
 		exit(-1);
 	}
 	fseek(f, 0, SEEK_END);
 	*p_size = ftell(f);
 	char * buf = malloc(*p_size);
 	fseek(f, 0, SEEK_SET);
-	if (fread(buf, *p_size, 1, f) != 1) { fprintf(stderr, "error durring fread"); };
+	if (fread(buf, *p_size, 1, f) != 1) {
+		fprintf(stderr, "error durring fread\n");
+		exit(-1);
+	}
 	fclose(f);
 	return buf;
 }
