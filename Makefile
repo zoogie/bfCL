@@ -20,10 +20,10 @@ all: $(PNAME)
 $(PNAME): $(OBJS)
 ifeq ($(shell uname), Darwin)
 	$(CC) $(LDFLAGS) -o $@ $^ -framework OpenCL -lmbedcrypto
-	#                                           ^__________^ If you want to use the static library instead, change this all to "-l/usr/local/lib/libmbedcrypto.a" without the quotes.
+#                                             ^__________^ If you want to use the static library instead, change this all to "-l/usr/local/lib/libmbedcrypto.a" without the quotes.
 else
 	$(CC) $(LDFLAGS) -o $@ $^ -lOpenCL -lmbedcrypto
-	#                                  ^__________^ If you want to use the static library instead, change this all to "-l:libmbedcrypto.a" without the quotes.
+#                                    ^__________^ If you want to use the static library instead, change this all to "-l:libmbedcrypto.a" without the quotes.
 endif
 
 clean:
