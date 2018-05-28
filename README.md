@@ -31,7 +31,7 @@ You can alternatively install [Intel's OpenCL SDK](https://software.intel.com/in
 * [Homebrew](https://brew.sh/) (**Read its instructions on installing**; installing Homebrew also installs Xcode command-line tools, which is also needed)
 #### Instructions for compiling on macOS
 1. Open up the "Terminal" application through Launchpad.
-1. In "Terminal", execute `brew update && brew install mbedtls git` to download and install required packages.
+1. In "Terminal", execute `brew update && brew install git mbedtls` to download and install required packages.
 1. In "Terminal", execute `git clone https://github.com/zoogie/bfCL.git && cd bfCL` to download bfCL and change your current directory to it.
 1. In "Terminal", execute `make` to compile bfCL (**OpenCL and mbedcrypto will both be dynamically linked!** Refer to the Makefile if you want to statically link mbedcrypto instead).
 
