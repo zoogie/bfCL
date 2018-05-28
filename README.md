@@ -23,7 +23,7 @@ You can alternatively install [Intel's OpenCL SDK](https://software.intel.com/in
 #### Instructions for compiling on Debian-based distros (the **concept** is still applicable for all other Linux distros; e.g., some packages have different names)
 1. Open up the "Terminal" application.
 1. In "Terminal", execute `sudo apt-get update && sudo apt-get install gcc git libmbedtls-dev make ocl-icd-opencl-dev` to download and install required packages.
-1. After all of the packages have finished installing, in "Terminal", execute `git clone https://github.com/zoogie/bfCL.git && cd bfCL`.
+1. After all of the packages have finished installing, in "Terminal", execute `git clone https://github.com/zoogie/bfCL.git && cd bfCL` to download bfCL and change your current directory to it.
 1. In "Terminal", execute `make` to compile bfCL (**OpenCL and mbedcrypto will both be dynamically linked!** Refer to the Makefile if you want to statically link mbedcrypto instead).
 ### macOS
 #### Requirements for compiling on macOS
