@@ -21,11 +21,11 @@ all: $(PNAME)
 $(PNAME): $(OBJS)
 ifeq ($(shell uname), Darwin)
 	$(CC) -o $@ $^ -framework OpenCL -lmbedcrypto
-# If you want to use the mbedcrypto static library instead, change "-lmbedcrypto" to "/usr/local/lib/libmbedcrypto.a" (or wherever else it may be) with or without the quotes.
+# If you want to use the mbedcrypto static library instead (on macOS), change "-lmbedcrypto" to "/usr/local/lib/libmbedcrypto.a" (or wherever else it may be) with the quotes.
 else
 	$(CC) $(LDFLAGS) -o $@ $^ -lOpenCL -lmbedcrypto
-# If you want to use the mbedcrypto static library instead, change "-lmbedcrypto" to "-l:libmbedcrypto.a" without the quotes.
-# Note: Ubuntu (probably Debian as well) doesn't install "libmbedcrypto.a" through apt-get, thus you'd have to compile mbedtls yourself.
+# If you want to use the mbedcrypto static library instead (whether you're using MSYS2 or are on Linux), change "-lmbedcrypto" to "-l:libmbedcrypto.a" without the quotes.
+# Note: Ubuntu (probably Debian as well) doesn't install "libmbedcrypto.a" through apt-get, thus you would have to compile mbedtls yourself.
 endif
 
 clean:
