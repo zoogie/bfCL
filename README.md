@@ -20,7 +20,8 @@ You can alternatively install [Intel's OpenCL SDK](https://software.intel.com/in
 ### Linux
 #### Requirements for compiling on all Linux distros
 * **A 64-bit computer**
-#### Instructions for compiling on Debian-based Linux distros (the **concept** is still applicable for all other Linux distros; e.g., some packages may have different names)
+#### Instructions for compiling on Debian-based Linux distros
+Note: the **concept** is still applicable for all other Linux distros; e.g., some packages may have different names.
 1. Open up the "Terminal" application.
 1. In "Terminal", execute `sudo apt-get update && sudo apt-get install gcc git libmbedtls-dev make ocl-icd-opencl-dev` to download and install required packages (note that the "ocl-icd-opencl-dev" package includes both the OpenCL C headers and the OpenCL ICD Loader library).
 1. After all of the packages have finished installing, in "Terminal", execute `git clone https://github.com/zoogie/bfCL.git && cd bfCL` to download bfCL and change your current directory to it.
