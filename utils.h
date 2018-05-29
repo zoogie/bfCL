@@ -1,4 +1,3 @@
-
 #pragma once
 
 // a crude cross Windows/POSIX high precision timer
@@ -37,4 +36,3 @@ int cpu_has_rdrand();
 int rdrand_fill(unsigned long long *p, size_t size);
 
 char * trim(char *in);
-

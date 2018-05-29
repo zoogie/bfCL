@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 
 typedef uint8_t u8;
@@ -116,4 +115,3 @@ static inline void dsi_make_xor(u8 *xor, const u8 *src, const u8 *ver) {
 	xor_128((u64*)target_xor, (u64*)src, (u64*)ver);
 	byte_reverse_16(xor, target_xor);
 }
-

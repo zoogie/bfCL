@@ -1,4 +1,3 @@
-
 #ifdef BCD
 
 inline u64 to_dsi_bcd(u64 i) {

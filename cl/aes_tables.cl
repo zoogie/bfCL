@@ -1,4 +1,3 @@
-
 // I'm obsessed with the idea of generating this file in memory
 // on the other hand I know that's pointless...
 
@@ -265,4 +264,3 @@ __constant static const uint32_t RCON[10] =
 	0x00000010, 0x00000020, 0x00000040, 0x00000080,
 	0x0000001B, 0x00000036
 };
-

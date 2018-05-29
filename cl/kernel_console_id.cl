@@ -1,4 +1,3 @@
-
 // the caller should feed the target xor pad byte reversed as two uint64_t
 // the ctr from emmc_cid_sha1 byte reversed as 4 uint32_t
 __kernel void test_console_id(
@@ -29,4 +28,3 @@ __kernel void test_console_id(
 		*out = console_id;
 	}
 }
-

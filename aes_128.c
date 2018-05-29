@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <mbedtls/config.h>
 #include <mbedtls/version.h>
@@ -88,4 +87,3 @@ void aes_encrypt_128_bulk(const unsigned char *in, unsigned char *out, unsigned 
 		out += AES_BLOCK_SIZE;
 	}
 }
-

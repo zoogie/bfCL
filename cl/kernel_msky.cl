@@ -1,4 +1,3 @@
-
 __kernel void test_msky(
 	u32 k0, u32 k1, u32 k2, u32 k3,
 	u32 v0, u32 v1, u32 v2, u32 v3,
@@ -17,4 +16,3 @@ __kernel void test_msky(
 		*out = k2;
 	}
 }
-

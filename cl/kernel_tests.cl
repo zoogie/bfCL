@@ -1,4 +1,3 @@
-
 __kernel void sha1_16_test(
 	__global const uint32_t *in,
 	__global uint32_t *out)
@@ -70,4 +69,3 @@ __kernel void aes_dec_128_test(
 	}
 #endif
 }
-

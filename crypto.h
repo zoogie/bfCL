@@ -1,4 +1,3 @@
-
 #pragma once
 
 // definition in sha1_16.c

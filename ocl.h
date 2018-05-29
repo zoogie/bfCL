@@ -1,7 +1,11 @@
 #pragma once
 
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+#ifdef __APPLE__
+#include <OpenCL/cl.h>
+#else
 #include <CL/cl.h>
+#endif
 
 typedef struct{
 	cl_device_id id;
@@ -50,4 +54,3 @@ void ocl_get_device(cl_platform_id *p_platform_id, cl_device_id *p_device_id);
 cl_program ocl_build_from_sources(
 	unsigned num_sources, const char *source_names[],
 	cl_context context, cl_device_id device_id, const char * options);
-

@@ -1,4 +1,3 @@
-
 typedef unsigned int uint32_t;
 
 typedef unsigned char u8;
@@ -25,4 +24,3 @@ typedef unsigned long u64;
 	(b)[(i) + 3] = (unsigned char) ( (n)       );       \
 }
 #endif
-

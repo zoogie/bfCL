@@ -1,4 +1,4 @@
-
+#include <string.h>
 #include <stdio.h>
 #include <time.h>
 #include "utils.h"
@@ -170,7 +170,7 @@ int ocl_brute_console_id(const cl_uchar *console_id, const cl_uchar *emmc_cid,
 		} else {
 			console_id |= (u64)i << group_bits;
 		}
-		printf("%016"LL"x\n", console_id);
+		printf("%016"LL"x\n", (unsigned long long) console_id);
 		OCL_ASSERT(clSetKernelArg(kernel, 0, sizeof(cl_ulong), &console_id));
 
 		OCL_ASSERT(clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &num_items, &local, 0, NULL, NULL));
@@ -179,7 +179,7 @@ int ocl_brute_console_id(const cl_uchar *console_id, const cl_uchar *emmc_cid,
 		OCL_ASSERT(clEnqueueReadBuffer(command_queue, mem_out, CL_TRUE, 0, sizeof(cl_ulong), &out, 0, NULL, NULL));
 		if (out) {
 			get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
-			printf("got a hit: %016"LL"x\n", out);
+			printf("got a hit: %016"LL"x\n", (unsigned long long) out);
 			// also write to a file
 			dump_to_file(emmc_cid ? hexdump(emmc_cid, 16, 0) : hexdump(src0, 16, 0), &out, 8);
 			break;
@@ -372,6 +372,7 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 		int msky3_offset = (j & 1 ? 1 : -1) * ((j + 1) >> 1);
 		cl_uint msky3 = msky[3] + msky3_offset;
 		printf("msed3:%08x offset:%d    \r", msky3, msky3_offset);
+		fflush(stdout);
 		for (i = 0; i < loops; ++i) {
 			cl_uint msky2 = i << group_bits;
 			OCL_ASSERT(clSetKernelArg(kernel, 2, sizeof(cl_uint), &msky2));
@@ -493,7 +494,7 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 		int fan = (j & 1 ? 1 : -1) * ((j + 1) >> 1);
 
 		if(fan > 0){                                         //check to see if bf exhausted in both directions, quit if so
-			if( lfcs_block + fan  > upper_bound  &&  (int)lfcs_block - fan < lower_bound){ 
+			if( lfcs_block + fan  > upper_bound  &&  (int)lfcs_block - fan < lower_bound){
 				printf("Exhausted all possible lfcs combinations, exiting ...\n\n");
 				break;
 			}
@@ -504,6 +505,7 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 		}
 
 		printf("%d \r", fan);
+		fflush(stdout);
 		for (i = 0; i < loops; ++i) {
 			cl_uint lfcs = lfcs_template + fan * 0x10000 + (i << (group_bits - 16));
 			OCL_ASSERT(clSetKernelArg(kernel, 0, sizeof(cl_uint), &lfcs));
@@ -531,13 +533,13 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 					printf("movable_part1.sed dumped to file\n");
 					printf("don't you dare forget to add the id0 to it!\n");
 				}
-			
+
 				printf("done.\n\n");
 				break;
 			}
 
 		}
-		
+
 		if (out) {
 			break;
 		}
@@ -559,4 +561,3 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 	clReleaseContext(context);
 	return !out;
 }
-

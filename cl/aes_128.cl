@@ -1,4 +1,3 @@
-
 /* AES 128 ECB dug out from mbed TLS 2.5.1
  * https://github.com/ARMmbed/mbedtls/blob/development/include/mbedtls/aes.h
  * https://github.com/ARMmbed/mbedtls/blob/development/library/aes.c

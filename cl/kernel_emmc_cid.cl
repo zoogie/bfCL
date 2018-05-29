@@ -1,4 +1,3 @@
-
 __kernel void test_emmc_cid(
 	u64 emmc_cid_l, u64 emmc_cid_h,
 	u64 sha1_16_l, u64 sha1_16_h,
@@ -16,4 +15,3 @@ __kernel void test_emmc_cid(
 		*out = get_global_id(0);
 	}
 }
-

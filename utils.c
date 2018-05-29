@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -81,9 +80,9 @@ void get_hp_time(struct timeval *pt) {
 }
 
 long long hp_time_diff(struct timeval *pt0, struct timeval *pt1) {
-	long long diff = pt1.tv_sec - pt0.tv_sec;
+	long long diff = pt1->tv_sec - pt0->tv_sec;
 	diff *= 1000000;
-	diff += pt1.tv_usec - pt0.tv_usec;
+	diff += pt1->tv_usec - pt0->tv_usec;
 	return diff;
 }
 
@@ -93,14 +92,17 @@ long long hp_time_diff(struct timeval *pt0, struct timeval *pt1) {
 char * read_file(const char *file_name, size_t *p_size) {
 	FILE * f = fopen(file_name, "rb");
 	if (f == NULL) {
-		fprintf(stderr, "can't read file: %s", file_name);
+		fprintf(stderr, "can't read file: %s\n", file_name);
 		exit(-1);
 	}
 	fseek(f, 0, SEEK_END);
 	*p_size = ftell(f);
 	char * buf = malloc(*p_size);
 	fseek(f, 0, SEEK_SET);
-	fread(buf, *p_size, 1, f);
+	if (fread(buf, *p_size, 1, f) != 1) {
+		fprintf(stderr, "error durring fread\n");
+		exit(-1);
+	}
 	fclose(f);
 	return buf;
 }
@@ -176,4 +178,3 @@ char * trim(char *in) {
 	}
 	return first_non_ws;
 }
-

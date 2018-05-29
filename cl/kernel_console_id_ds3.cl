@@ -1,4 +1,3 @@
-
 // dark_samus3's brilliant idea, doesn't need the EMMC CID beforehand
 // instead, use two known sectors to verify against each other
 // https://gbatemp.net/threads/twlbf-a-tool-to-brute-force-dsi-console-id-or-emmc-cid.481732/page-4#post-7661355
