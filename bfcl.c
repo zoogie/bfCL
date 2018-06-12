@@ -49,7 +49,7 @@ int main(int argc, const char *argv[]) {
 			puts(invalid_parameters);
 			ret = -1;
 		}
-	} else if (argc == 7) {
+	} else if (argc == 7 && strcmp(argv[1], "lfcs")) {
 		unsigned char console_id[8], emmc_cid[16], offset[2], src[16], ver[16];
 		hex2bytes(console_id, 8, argv[2], 1);
 		hex2bytes(emmc_cid, 16, argv[3], 1);
@@ -69,19 +69,37 @@ int main(int argc, const char *argv[]) {
 			puts(invalid_parameters);
 			ret = -1;
 		}
-	} else if(argc == 5 && !strcmp(argv[1], "msky")){
+	} else if(argc == 6 && !strcmp(argv[1], "msky") && !strcmp(argv[5], "sws")){ // "sws" is standard work size
 		uint32_t msky[4], ver[4], msky_offset;
 		hex2bytes((unsigned char*)msky, 16, argv[2], 1);
 		hex2bytes((unsigned char*)ver, 16, argv[3], 1);
 		hex2bytes((unsigned char*)&msky_offset, 4, argv[4], 1);
+		group_bits = 28;
 		ret = ocl_brute_msky(msky, ver, msky_offset);
-	} else if(argc == 6 && !strcmp(argv[1], "lfcs")){
+	} else if(argc == 6 && !strcmp(argv[1], "msky") && !strcmp(argv[5], "rws")){ // "rws" is reduced work size
+		uint32_t msky[4], ver[4], msky_offset;
+		hex2bytes((unsigned char*)msky, 16, argv[2], 1);
+		hex2bytes((unsigned char*)ver, 16, argv[3], 1);
+		hex2bytes((unsigned char*)&msky_offset, 4, argv[4], 1);
+		group_bits = 20;
+		ret = ocl_brute_msky(msky, ver, msky_offset);
+	} else if(argc == 7 && !strcmp(argv[1], "lfcs") && !strcmp(argv[6], "sws")){ // "sws" is standard work size
 		uint32_t lfcs, ver[2], lfcs_offset;
 		uint16_t newflag;
 		hex2bytes((unsigned char*)&lfcs, 4, argv[2], 1);
 		hex2bytes((unsigned char*)&newflag, 2, argv[3], 1);
 		hex2bytes((unsigned char*)ver, 8, argv[4], 1);
 		hex2bytes((unsigned char*)&lfcs_offset, 4, argv[5], 1);
+		group_bits = 28;
+		ret = ocl_brute_lfcs(lfcs, newflag, ver, lfcs_offset);
+	} else if(argc == 7 && !strcmp(argv[1], "lfcs") && !strcmp(argv[6], "rws")){ // "rws" is reduced work size
+		uint32_t lfcs, ver[2], lfcs_offset;
+		uint16_t newflag;
+		hex2bytes((unsigned char*)&lfcs, 4, argv[2], 1);
+		hex2bytes((unsigned char*)&newflag, 2, argv[3], 1);
+		hex2bytes((unsigned char*)ver, 8, argv[4], 1);
+		hex2bytes((unsigned char*)&lfcs_offset, 4, argv[5], 1);
+		group_bits = 20;
 		ret = ocl_brute_lfcs(lfcs, newflag, ver, lfcs_offset);
 	} else {
 		printf(invalid_parameters);

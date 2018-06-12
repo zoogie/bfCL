@@ -351,7 +351,6 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 	OCL_ASSERT(clEnqueueWriteBuffer(command_queue, mem_out, CL_TRUE, 0, sizeof(cl_uint), &out, 0, NULL, NULL));
 
 	unsigned brute_bits = 32;
-	unsigned group_bits = 20;
 	unsigned loop_bits = brute_bits - group_bits;
 	unsigned loops = 1ull << loop_bits;
 	size_t num_items = 1ull << group_bits;
@@ -472,7 +471,6 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 	OCL_ASSERT(clEnqueueWriteBuffer(command_queue, mem_out, CL_TRUE, 0, sizeof(cl_uint), &out, 0, NULL, NULL));
 
 	unsigned brute_bits = 32;
-	unsigned group_bits = 20;
 	unsigned loop_bits = brute_bits - group_bits;
 	unsigned loops = 1ull << loop_bits;
 	size_t num_items = 1ull << group_bits;
