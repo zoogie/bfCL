@@ -9,6 +9,7 @@
 #endif
 #include "ocl.h"
 #include "utils.h"
+#include "ocl_util.h"
 
 #define STATIC_ASSERT(c) static_assert(c, #c)
 STATIC_ASSERT(sizeof(char) == sizeof(cl_char));
@@ -47,7 +48,10 @@ const char * ocl_err_msg(cl_int error_code) {
 
 void ocl_assert(cl_int ret, const char * code, const char * file,
 	const char * function, unsigned line) {
-	if (ret != CL_SUCCESS) {
+	// Silence "Out of Resources" error if Seedminer is being used
+	if (ret == CL_OUT_OF_RESOURCES && seedminer_mode == 1)
+		exit(ret);
+	else if (ret != CL_SUCCESS) {
 		printf("%s: %s, function %s, line %u\n\t%s\nerror: %s\n",
 			__FUNCTION__, file, function, line, code, ocl_err_msg(ret));
 		exit(ret);

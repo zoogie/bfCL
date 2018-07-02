@@ -3,7 +3,7 @@ This is an experimental port of [TWLbf](https://github.com/Jimmy-Z/TWLbf/) to Op
 
 ## Compile
 ### Windows
-Note: If you really want to use Virtual Studio 2017, you're going to probably have to change the Makefile a bit and compile [mbedtls](https://github.com/ARMmbed/mbedtls/) from source.
+Note: If you really want to use Visual Studio 2017, you're going to probably have to change the Makefile a bit and compile [mbedtls](https://github.com/ARMmbed/mbedtls/) from source.
 #### Requirements for compiling with MSYS2
 * **A 64-bit computer**
 * [MSYS2](http://www.msys2.org/) (the x86_64 executable; **read its instructions on installing and setting up**)

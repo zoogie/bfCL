@@ -32,6 +32,8 @@ static cl_ulong from_bcd(cl_ulong i) {
 	return o;
 }
 
+unsigned group_bits;
+
 int ocl_brute_console_id(const cl_uchar *console_id, const cl_uchar *emmc_cid,
 	cl_uint offset0, const cl_uchar *src0, const cl_uchar *ver0,
 	cl_uint offset1, const cl_uchar *src1, const cl_uchar *ver1,
@@ -385,7 +387,7 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 			if (out) {
 				get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
 				cl_uint msky_ret[4] = { msky[0], msky[1], out, msky3 };
-				printf("got a hit: %s\n", hexdump(msky_ret, 16, 0));
+				printf("got a hit: %s at offset: %d\n", hexdump(msky_ret, 16, 0), msky3_offset);
 				u8 msed[0x140]={0};
 				memcpy(&msed[0x110], msky_ret, 16);
 				dump_to_file("movable.sed", msed, 0x140);
@@ -516,7 +518,7 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 			if (out) {
 				get_hp_time(&t1); td = hp_time_diff(&t0, &t1);
 				lfcs += out >> 16;
-				printf("got a hit: %s (rand: 0x%04x)\n", hexdump(&lfcs, 4, 0), out & 0xffff);
+				printf("got a hit: %s (rand: 0x%04x) at offset: %d\n", hexdump(&lfcs, 4, 0), out & 0xffff, lfcs_offset);
 				u8 part1[0x1000]={0};
 				memcpy(part1, &lfcs, 4);
 				memcpy(part1+4, &newflag, 2);
