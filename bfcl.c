@@ -27,7 +27,7 @@ int main(int argc, const char *argv[]) {
 	} else if (argc == 2 && !strcmp(argv[1], "info")) {
 		cl_uint num_platforms;
 		ocl_info(&num_platforms, 1);
-	// Extremely condensed arguemnt parsing incoming!
+	// Extremely condensed argument parsing incoming!
 	} else if ((argc == 5 && !strcmp(argv[1], "msky")) || ((argc == 6 && !strcmp(argv[1], "msky")) && (!strcmp(argv[5], "sws") || !strcmp(argv[5], "rws"))) || ((argc == 7 && !strcmp(argv[1], "msky")) && ((!strcmp(argv[5], "sws") && !strcmp(argv[6], "sm")) || (!strcmp(argv[5], "rws") && !strcmp(argv[6], "sm"))))) {
 		uint32_t msky[4], ver[4], msky_offset;
 		hex2bytes((unsigned char*)msky, 16, argv[2], 1);
@@ -57,7 +57,7 @@ int main(int argc, const char *argv[]) {
 		if (argc == 7 && !strcmp(argv[6], "sm"))
 			seedminer_mode = 1;
 		ret = ocl_brute_msky(msky, ver, msky_offset);
-	// More extremely condensed arguemnt parsing incoming!
+	// More extremely condensed argument parsing incoming!
 	} else if ((argc == 6 && !strcmp(argv[1], "lfcs")) || ((argc == 7 && !strcmp(argv[1], "lfcs")) && (!strcmp(argv[6], "sws") || !strcmp(argv[6], "rws"))) || ((argc == 8 && !strcmp(argv[1], "msky")) && ((!strcmp(argv[6], "sws") && !strcmp(argv[7], "sm")) || (!strcmp(argv[6], "rws") && !strcmp(argv[7], "sm"))))) {
 		uint32_t lfcs, ver[2], lfcs_offset;
 		uint16_t newflag;
