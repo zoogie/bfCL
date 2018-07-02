@@ -37,7 +37,7 @@ int main(int argc, const char *argv[]) {
 			group_bits = 28;
 			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
 			char response;
-			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
+			printf("\nWARNING: Deprecated arguments are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
 			scanf("%c", &response);
 			while (1 == 1) {
 				if (response == 'Y' || response == 'y')
@@ -69,7 +69,7 @@ int main(int argc, const char *argv[]) {
 			group_bits = 28;
 			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
 			char response;
-			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
+			printf("\nWARNING: Deprecated arguments are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
 			scanf("%c", &response);
 			while (1 == 1) {
 				if (response == 'Y' || response == 'y')
