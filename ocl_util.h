@@ -1,1 +1,1 @@
-extern int seedminer_mode;
+int seedminer_mode;
