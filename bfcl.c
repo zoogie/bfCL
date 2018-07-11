@@ -40,11 +40,11 @@ int main(int argc, const char *argv[]) {
 			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
 			scanf("%c", &response);
 			while (1 == 1) {
-				if (response == 'Y' || response == 'y')
+				if (response == 'Y' || response == 'y') {
 					break;
-				else if (response == 'N' || response == 'n')
+				} else if (response == 'N' || response == 'n') {
 					exit(0);
-				else {
+				} else {
 					printf("Invalid option chosen!\nWould you like to continue with the mining? Enter Y or N: \n");
 					scanf(" %c", &response);
 				}
@@ -54,8 +54,9 @@ int main(int argc, const char *argv[]) {
 		} else if ((argc == 6 || argc == 7) && !strcmp(argv[5], "rws")) {
 			group_bits = 20;
 		}
-		if (argc == 7 && !strcmp(argv[6], "sm"))
+		if (argc == 7 && !strcmp(argv[6], "sm")) {
 			seedminer_mode = 1;
+		}
 		ret = ocl_brute_msky(msky, ver, msky_offset);
 	// More extremely condensed argument parsing incoming!
 	} else if ((argc == 6 && !strcmp(argv[1], "lfcs")) || ((argc == 7 && !strcmp(argv[1], "lfcs")) && (!strcmp(argv[6], "sws") || !strcmp(argv[6], "rws"))) || ((argc == 8 && !strcmp(argv[1], "msky")) && ((!strcmp(argv[6], "sws") && !strcmp(argv[7], "sm")) || (!strcmp(argv[6], "rws") && !strcmp(argv[7], "sm"))))) {
@@ -86,9 +87,9 @@ int main(int argc, const char *argv[]) {
 		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
 			group_bits = 20;
 		}
-		if (argc == 8 && !strcmp(argv[7], "sm"))
+		if (argc == 8 && !strcmp(argv[7], "sm")) {
 			seedminer_mode = 1;
-		group_bits = 28;
+		}
 		ret = ocl_brute_lfcs(lfcs, newflag, ver, lfcs_offset);
 	} else if (argc == 7) {
 		unsigned char console_id[8], emmc_cid[16], offset[2], src[16], ver[16];
