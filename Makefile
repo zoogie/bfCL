@@ -1,22 +1,18 @@
 PNAME = bfcl
 OBJS = $(PNAME).o ocl_util.o utils.o sha1_16.o aes_128.o ocl_test.o ocl_brute.o
+CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd -m64
+
 ifdef SYSTEMROOT
-	# Intel's Windows OpenCL SDK installer sets an environmental variable. If it's not set, define only CFLAGS.
+	# Intel's Windows OpenCL SDK installer sets an environmental variable.
 	ifdef INTELOCLSDKROOT
-		CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd -I$(INTELOCLSDKROOT)\include
+		CFLAGS += -I$(INTELOCLSDKROOT)\include
 		LDFLAGS += -L$(INTELOCLSDKROOT)\lib\x64
-	else
-		CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd
 	endif
 else
 	ifeq ($(shell uname), Linux)
 		# Intel's Linux OpenCL SDK installer doesn't set an environment variable, so we'll have to specify its default installation location instead, regardless if it exists or not.
-		CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd -I/opt/intel/opencl-sdk/include
+		CFLAGS += -I/opt/intel/opencl-sdk/include
 		LDFLAGS += -L/opt/intel/opencl-sdk/lib64
-	endif
-	ifeq ($(shell uname), Darwin)
-		# macOS's linker likes to warn you about library dirs not being found. That being said, macOS includes its own implementation of OpenCL, so custom LDFLAGS don't need to be defined.
-		CFLAGS += -std=c11 -Wall -Werror -O2 -mrdrnd
 	endif
 endif
 
