@@ -116,7 +116,7 @@ OCL_Platform *ocl_info(cl_uint *p_num_platforms, int verbose){
 		}
 
 		cl_uint num_devices;
-		// Potentially prevent a CL_DEVICE_NOT_FOUND error by manually specifying each device type
+		// Potentially prevent a CL_DEVICE_NOT_FOUND error from occurring by manually specifying each device type
 		cl_device_id *device_ids = ocl_get_device_ids(platform_id, CL_DEVICE_TYPE_CPU || CL_DEVICE_TYPE_GPU || CL_DEVICE_TYPE_ACCELERATOR || CL_DEVICE_TYPE_DEFAULT, &num_devices);
 		platform->num_devices = num_devices;
 		if (num_devices == 0) {
