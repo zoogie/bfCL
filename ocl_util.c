@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include "ocl.h"
 #ifdef __APPLE__
 #include <OpenCL/cl_ext.h>
 #else
 #include <CL/cl_ext.h>
 #endif
-#include "ocl.h"
 #include "utils.h"
 #include "ocl_util.h"
 
