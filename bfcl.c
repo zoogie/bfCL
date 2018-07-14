@@ -21,6 +21,7 @@ static inline cl_ushort u16be(const unsigned char *in){
 const char invalid_parameters[] = "invalid parameters\n";
 
 int main(int argc, const char *argv[]) {
+	signal(SIGINT, intHandler);
 	int ret = 0;
 	if (argc == 1) {
 		ret = ocl_test();
@@ -36,17 +37,25 @@ int main(int argc, const char *argv[]) {
 		if (argc == 5 && !strcmp(argv[1], "msky")) {
 			group_bits = 28;
 			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
-			char response;
-			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
-			scanf("%c", &response);
-			while (1 == 1) {
-				if (response == 'Y' || response == 'y') {
+			char response[2];
+			// NO BUFFER OVERFLOWS CAN HAPPEN HERE!!! >:(
+			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script)!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: ");
+			fflush(stdout);
+			// As long as your response starts with a "y" or an "n", it'll be accepted and the rest will be truncated.
+			fgets(response, sizeof(response), stdin);
+			fflush(stdin);
+			real_sleep(1);
+			while (stop_bfcl == 0) {
+				if (!strcmp(response, "Y") || !strcmp(response, "y")) {
 					break;
-				} else if (response == 'N' || response == 'n') {
+				} else if (!strcmp(response, "N") || !strcmp(response, "n")) {
 					exit(0);
 				} else {
-					printf("Invalid option chosen!\nWould you like to continue with the mining? Enter Y or N: \n");
-					scanf(" %c", &response);
+					printf("\nInvalid option chosen!\nWould you like to continue with the mining? Enter Y or N: ");
+					fflush(stdout);
+					fgets(response, sizeof(response), stdin);
+					fflush(stdin);
+					real_sleep(1);
 				}
 			}*/
 		} else if ((argc == 6 || argc == 7) && !strcmp(argv[5], "sws")) {
@@ -69,17 +78,25 @@ int main(int argc, const char *argv[]) {
 		if (argc == 6 && !strcmp(argv[1], "lfcs")) {
 			group_bits = 28;
 			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
-			char response;
-			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
-			scanf("%c", &response);
-			while (1 == 1) {
-				if (response == 'Y' || response == 'y')
+			char response[2];
+			// NO BUFFER OVERFLOWS CAN HAPPEN HERE!!! >:(
+			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script)!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: ");
+			fflush(stdout);
+			// As long as your response starts with a "y" or an "n", it'll be accepted and the rest will be truncated.
+			fgets(response, sizeof(response), stdin);
+			fflush(stdin);
+			real_sleep(1);
+			while (stop_bfcl == 0) {
+				if (!strcmp(response, "Y") || !strcmp(response, "y")) {
 					break;
-				else if (response == 'N' || response == 'n')
+				} else if (!strcmp(response, "N") || !strcmp(response, "n")) {
 					exit(0);
-				else {
-					printf("Invalid option chosen!\nWould you like to continue with the mining? Enter Y or N: \n");
-					scanf(" %c", &response);
+				} else {
+					printf("\nInvalid option chosen!\nWould you like to continue with the mining? Enter Y or N: ");
+					fflush(stdout);
+					fgets(response, sizeof(response), stdin);
+					fflush(stdin);
+					real_sleep(1);
 				}
 			}*/
 		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "sws")) {

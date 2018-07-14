@@ -178,3 +178,16 @@ char * trim(char *in) {
 	}
 	return first_non_ws;
 }
+
+void real_sleep(int sleep_sec) {
+#ifdef _WIN32
+    Sleep(sleep_sec * 1000);
+#else
+	sleep(sleep_sec);
+#endif
+}
+
+void intHandler() {
+	stop_bfcl = 1;
+	exit(0);
+}

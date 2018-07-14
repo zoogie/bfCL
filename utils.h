@@ -1,5 +1,7 @@
 #pragma once
 
+#include <signal.h> // I sure do hope this works on MS VS; for use with signal handling.
+
 // a crude cross Windows/POSIX high precision timer
 #ifdef _WIN32
 
@@ -12,6 +14,7 @@ typedef LARGE_INTEGER TimeHP;
 #else
 
 #include <sys/time.h>
+#include <unistd.h>
 typedef struct timeval TimeHP;
 void get_hp_time(TimeHP *pt);
 
@@ -36,3 +39,9 @@ int cpu_has_rdrand();
 int rdrand_fill(unsigned long long *p, size_t size);
 
 char * trim(char *in);
+
+int stop_bfcl;
+
+void real_sleep(int sleep_sec);
+
+void intHandler();
