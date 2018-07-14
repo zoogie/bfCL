@@ -14,7 +14,6 @@ typedef LARGE_INTEGER TimeHP;
 #else
 
 #include <sys/time.h>
-#include <unistd.h>
 typedef struct timeval TimeHP;
 void get_hp_time(TimeHP *pt);
 
@@ -42,6 +41,10 @@ char * trim(char *in);
 
 int stop_bfcl;
 
+int seedminer_mode;
+
 void real_sleep(int sleep_sec);
 
 void intHandler();
+
+void deprecation_notice_and_input();

@@ -32,8 +32,6 @@ static cl_ulong from_bcd(cl_ulong i) {
 	return o;
 }
 
-unsigned group_bits;
-
 int ocl_brute_console_id(const cl_uchar *console_id, const cl_uchar *emmc_cid,
 	cl_uint offset0, const cl_uchar *src0, const cl_uchar *ver0,
 	cl_uint offset1, const cl_uchar *src1, const cl_uchar *ver1,
