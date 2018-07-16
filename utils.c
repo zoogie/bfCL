@@ -11,6 +11,10 @@
 #include <intrin.h>
 #endif
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 int htoi(char a){
 	if(a >= '0' && a <= '9'){
 		return a - '0';
