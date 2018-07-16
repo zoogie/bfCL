@@ -7,7 +7,6 @@
 
 #ifdef __GNUC__
 #include <cpuid.h>
-#include <unistd.h>
 #elif _MSC_VER
 #include <intrin.h>
 #endif
@@ -209,7 +208,7 @@ void deprecation_notice_and_input() {
 		} else if (!strcmp(response, "N") || !strcmp(response, "n")) {
 			exit(0);
 		} else {
-			printf("\nInvalid option chosen!\nWould you like to continue with the mining? Enter Y or N: ");
+			printf("\nInvalid choice chosen!\nWould you like to continue with the mining? Enter Y or N: ");
 			fflush(stdout);
 			fgets(response, sizeof(response), stdin);
 			fflush(stdin);
