@@ -207,8 +207,10 @@ void ocl_get_device(cl_platform_id *p_platform_id, cl_device_id *p_device_id) {
 		}
 	}
 	if (maximum > 0) {
-		printf("selected device %s on platform %s\n",
-			trim((char*)platforms[pl_idx].devices[dev_idx].name), trim((char*)platforms[pl_idx].name));
+		if (seedminer_mode != 1 || rws_mode != 1) {
+			printf("selected device %s on platform %s\n",
+				trim((char*)platforms[pl_idx].devices[dev_idx].name), trim((char*)platforms[pl_idx].name));
+		}
 		*p_platform_id = platforms[pl_idx].id;
 		*p_device_id = platforms[pl_idx].devices[dev_idx].id;
 	} else {
@@ -237,7 +239,9 @@ cl_program ocl_build_from_sources(
 	// printf("compiler options: %s\n", options);
 	err = clBuildProgram(program, 0, NULL, options, NULL, NULL);
 	get_hp_time(&t1);
-	printf("%.3f seconds for OpenCL compiling\n", hp_time_diff(&t0, &t1) / 1000000.0);
+	if (seedminer_mode != 1 || rws_mode != 1) {
+		printf("%.3f seconds for OpenCL compiling\n", hp_time_diff(&t0, &t1) / 1000000.0);
+	}
 	if (err != CL_SUCCESS) {
 		fprintf(stderr, "failed to compile program, error: %s, build log:\n", ocl_err_msg(err));
 		size_t len;

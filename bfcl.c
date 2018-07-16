@@ -32,12 +32,15 @@ int main(int argc, const char *argv[]) {
 		hex2bytes((unsigned char*)ver, 16, argv[3], 1);
 		hex2bytes((unsigned char*)&msky_offset, 4, argv[4], 1);
 		if (argc == 5 && !strcmp(argv[1], "msky")) {
+			rws_mode = 0;
 			group_bits = 28;
-			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
+			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is released:
 			deprecation_notice_and_input();*/
 		} else if ((argc == 6 || argc == 7) && !strcmp(argv[5], "sws")) {
+			rws_mode = 0;
 			group_bits = 28;
 		} else if ((argc == 6 || argc == 7) && !strcmp(argv[5], "rws")) {
+			rws_mode = 1;
 			group_bits = 20;
 		}
 		if (argc == 7 && !strcmp(argv[6], "sm")) {
@@ -53,12 +56,15 @@ int main(int argc, const char *argv[]) {
 		hex2bytes((unsigned char*)ver, 8, argv[4], 1);
 		hex2bytes((unsigned char*)&lfcs_offset, 4, argv[5], 1);
 		if (argc == 6 && !strcmp(argv[1], "lfcs")) {
+			rws_mode = 0;
 			group_bits = 28;
-			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
+			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is released:
 			deprecation_notice_and_input();*/
 		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "sws")) {
+			rws_mode = 0;
 			group_bits = 28;
 		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
+			rws_mode = 1;
 			group_bits = 20;
 		}
 		if (argc == 8 && !strcmp(argv[7], "sm")) {

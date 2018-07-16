@@ -343,7 +343,9 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 
 	size_t local;
 	OCL_ASSERT(clGetKernelWorkGroupInfo(kernel, device_id, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local), &local, NULL));
-	printf("local work size: %u\n", (unsigned)local);
+	if (seedminer_mode != 1 || rws_mode != 1) {
+		printf("local work size: %u\n", (unsigned)local);
+	}
 
 	// there's no option to create it zero initialized
 	cl_uint out = 0;
@@ -463,7 +465,9 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 
 	size_t local;
 	OCL_ASSERT(clGetKernelWorkGroupInfo(kernel, device_id, CL_KERNEL_WORK_GROUP_SIZE, sizeof(local), &local, NULL));
-	printf("local work size: %u\n", (unsigned)local);
+	if (seedminer_mode != 1 || rws_mode != 1) {
+		printf("local work size: %u\n", (unsigned)local);
+	}
 
 	// there's no option to create it zero initialized
 	cl_uint out = 0;

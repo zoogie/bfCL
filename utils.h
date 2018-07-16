@@ -43,6 +43,8 @@ int stop_bfcl;
 
 int seedminer_mode;
 
+int rws_mode;
+
 void real_sleep(int sleep_sec);
 
 void intHandler();
