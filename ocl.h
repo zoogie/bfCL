@@ -1,6 +1,7 @@
 #pragma once
 
-#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+#define CL_TARGET_OPENCL_VERSION 120 // For use with unified headers since no OpenCL 2.0+ API calls are made.
+#define CL_USE_DEPRECATED_OPENCL_1_2_APIS // In the event unified headers aren't used. OpenCL 2.0+ headers are backwards-compatible.
 #ifdef __APPLE__
 #include <OpenCL/cl.h>
 #else

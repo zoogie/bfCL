@@ -1,5 +1,7 @@
 #pragma once
 
+#include <signal.h> // I sure do hope this works on MS VS; for use with signal handling.
+
 // a crude cross Windows/POSIX high precision timer
 #ifdef _WIN32
 
@@ -36,3 +38,15 @@ int cpu_has_rdrand();
 int rdrand_fill(unsigned long long *p, size_t size);
 
 char * trim(char *in);
+
+int stop_bfcl;
+
+int seedminer_mode;
+
+int rws_mode;
+
+void real_sleep(int sleep_sec);
+
+void intHandler();
+
+void deprecation_notice_and_input();

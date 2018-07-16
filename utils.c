@@ -11,6 +11,10 @@
 #include <intrin.h>
 #endif
 
+#ifndef _WIN32
+#include <unistd.h>
+#endif
+
 int htoi(char a){
 	if(a >= '0' && a <= '9'){
 		return a - '0';
@@ -177,4 +181,41 @@ char * trim(char *in) {
 		*last_non_ws = '\0';
 	}
 	return first_non_ws;
+}
+
+void real_sleep(int sleep_sec) {
+#ifdef _WIN32
+	Sleep(sleep_sec * 1000);
+#else
+	sleep(sleep_sec);
+#endif
+}
+
+void intHandler() {
+	// Not really needed for now.
+	stop_bfcl = 1;
+	exit(0);
+}
+
+void deprecation_notice_and_input() {
+	char response[2];
+	// NO BUFFER OVERFLOWS CAN HAPPEN HERE!!! >:(
+	printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script)!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: ");
+	fflush(stdout);
+	// As long as your response starts with a "y" or an "n", it'll be accepted and the rest will be truncated.
+	fgets(response, sizeof(response), stdin);
+	fflush(stdin);
+	while (1) {
+		real_sleep(1);
+		if (!strcmp(response, "Y") || !strcmp(response, "y")) {
+			break;
+		} else if (!strcmp(response, "N") || !strcmp(response, "n")) {
+			exit(0);
+		} else {
+			printf("\nInvalid choice chosen!\nWould you like to continue with the mining? Enter Y or N: ");
+			fflush(stdout);
+			fgets(response, sizeof(response), stdin);
+			fflush(stdin);
+		}
+	}
 }

@@ -4,11 +4,8 @@
 #include "utils.h"
 #include "ocl.h"
 #include "ocl_brute.h"
-#include "ocl_util.h"
 
 int ocl_test();
-
-int seedminer_mode = 0;
 
 static inline cl_ushort u16be(const unsigned char *in){
 	cl_ushort out;
@@ -21,6 +18,7 @@ static inline cl_ushort u16be(const unsigned char *in){
 const char invalid_parameters[] = "invalid parameters\n";
 
 int main(int argc, const char *argv[]) {
+	seedminer_mode = 0;
 	int ret = 0;
 	if (argc == 1) {
 		ret = ocl_test();
@@ -34,28 +32,20 @@ int main(int argc, const char *argv[]) {
 		hex2bytes((unsigned char*)ver, 16, argv[3], 1);
 		hex2bytes((unsigned char*)&msky_offset, 4, argv[4], 1);
 		if (argc == 5 && !strcmp(argv[1], "msky")) {
+			rws_mode = 0;
 			group_bits = 28;
-			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
-			char response;
-			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
-			scanf("%c", &response);
-			while (1 == 1) {
-				if (response == 'Y' || response == 'y')
-					break;
-				else if (response == 'N' || response == 'n')
-					exit(0);
-				else {
-					printf("Invalid option chosen!\nWould you like to continue with the mining? Enter Y or N: \n");
-					scanf(" %c", &response);
-				}
-			}*/
+			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is released:
+			deprecation_notice_and_input();*/
 		} else if ((argc == 6 || argc == 7) && !strcmp(argv[5], "sws")) {
+			rws_mode = 0;
 			group_bits = 28;
 		} else if ((argc == 6 || argc == 7) && !strcmp(argv[5], "rws")) {
+			rws_mode = 1;
 			group_bits = 20;
 		}
-		if (argc == 7 && !strcmp(argv[6], "sm"))
+		if (argc == 7 && !strcmp(argv[6], "sm")) {
 			seedminer_mode = 1;
+		}
 		ret = ocl_brute_msky(msky, ver, msky_offset);
 	// More extremely condensed argument parsing incoming!
 	} else if ((argc == 6 && !strcmp(argv[1], "lfcs")) || ((argc == 7 && !strcmp(argv[1], "lfcs")) && (!strcmp(argv[6], "sws") || !strcmp(argv[6], "rws"))) || ((argc == 8 && !strcmp(argv[1], "msky")) && ((!strcmp(argv[6], "sws") && !strcmp(argv[7], "sm")) || (!strcmp(argv[6], "rws") && !strcmp(argv[7], "sm"))))) {
@@ -66,29 +56,20 @@ int main(int argc, const char *argv[]) {
 		hex2bytes((unsigned char*)ver, 8, argv[4], 1);
 		hex2bytes((unsigned char*)&lfcs_offset, 4, argv[5], 1);
 		if (argc == 6 && !strcmp(argv[1], "lfcs")) {
+			rws_mode = 0;
 			group_bits = 28;
-			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is realeased:
-			char response;
-			printf("\nWARNING: Deprecated parameters are being used (most likely due to using an outdated Seedminer Python script!\nIf problems occur and you are using Seedminer, download an updated Python script.\nWould you like to continue? Enter Y or N: \n");
-			scanf("%c", &response);
-			while (1 == 1) {
-				if (response == 'Y' || response == 'y')
-					break;
-				else if (response == 'N' || response == 'n')
-					exit(0);
-				else {
-					printf("Invalid option chosen!\nWould you like to continue with the mining? Enter Y or N: \n");
-					scanf(" %c", &response);
-				}
-			}*/
+			/*Uncomment the following (and delete this current line) when a new Seedminer Python script is released:
+			deprecation_notice_and_input();*/
 		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "sws")) {
+			rws_mode = 0;
 			group_bits = 28;
 		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
+			rws_mode = 1;
 			group_bits = 20;
 		}
-		if (argc == 8 && !strcmp(argv[7], "sm"))
+		if (argc == 8 && !strcmp(argv[7], "sm")) {
 			seedminer_mode = 1;
-		group_bits = 28;
+		}
 		ret = ocl_brute_lfcs(lfcs, newflag, ver, lfcs_offset);
 	} else if (argc == 7) {
 		unsigned char console_id[8], emmc_cid[16], offset[2], src[16], ver[16];

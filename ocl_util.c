@@ -2,14 +2,13 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include "ocl.h"
 #ifdef __APPLE__
 #include <OpenCL/cl_ext.h>
 #else
 #include <CL/cl_ext.h>
 #endif
-#include "ocl.h"
 #include "utils.h"
-#include "ocl_util.h"
 
 #define STATIC_ASSERT(c) static_assert(c, #c)
 STATIC_ASSERT(sizeof(char) == sizeof(cl_char));
@@ -49,8 +48,9 @@ const char * ocl_err_msg(cl_int error_code) {
 void ocl_assert(cl_int ret, const char * code, const char * file,
 	const char * function, unsigned line) {
 	// Silence "Out of Resources" error if Seedminer is being used
-	if (ret == CL_OUT_OF_RESOURCES && seedminer_mode == 1)
+	if (ret == CL_OUT_OF_RESOURCES && seedminer_mode == 1) {
 		exit(ret);
+	}
 	else if (ret != CL_SUCCESS) {
 		printf("%s: %s, function %s, line %u\n\t%s\nerror: %s\n",
 			__FUNCTION__, file, function, line, code, ocl_err_msg(ret));
@@ -207,8 +207,10 @@ void ocl_get_device(cl_platform_id *p_platform_id, cl_device_id *p_device_id) {
 		}
 	}
 	if (maximum > 0) {
-		printf("selected device %s on platform %s\n",
-			trim((char*)platforms[pl_idx].devices[dev_idx].name), trim((char*)platforms[pl_idx].name));
+		if (seedminer_mode != 1 || rws_mode != 1) {
+			printf("selected device %s on platform %s\n",
+				trim((char*)platforms[pl_idx].devices[dev_idx].name), trim((char*)platforms[pl_idx].name));
+		}
 		*p_platform_id = platforms[pl_idx].id;
 		*p_device_id = platforms[pl_idx].devices[dev_idx].id;
 	} else {
@@ -237,7 +239,9 @@ cl_program ocl_build_from_sources(
 	// printf("compiler options: %s\n", options);
 	err = clBuildProgram(program, 0, NULL, options, NULL, NULL);
 	get_hp_time(&t1);
-	printf("%.3f seconds for OpenCL compiling\n", hp_time_diff(&t0, &t1) / 1000000.0);
+	if (seedminer_mode != 1 || rws_mode != 1) {
+		printf("%.3f seconds for OpenCL compiling\n", hp_time_diff(&t0, &t1) / 1000000.0);
+	}
 	if (err != CL_SUCCESS) {
 		fprintf(stderr, "failed to compile program, error: %s, build log:\n", ocl_err_msg(err));
 		size_t len;
