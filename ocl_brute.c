@@ -436,7 +436,7 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset,
 	clReleaseContext(context);
 	if (!out) { // Could any problems happen because of this?
 		printf("Max offset reached! Brute-forcing will now terminate!\n");
-		return 101; // For lack of a better return code
+		exit(101); // For lack of a better exit code
 	} else {
 		return !out;
 	}
