@@ -317,7 +317,7 @@ int ocl_brute_emmc_cid(const cl_uchar *console_id, cl_uchar *emmc_cid,
  * https://gbatemp.net/threads/eol-is-lol-the-34c3-talk-for-3ds-that-never-was.494698/
  * what I'm doing here is simply brute the 3rd u32 of a u128 so that the first half of sha256 matches ver
  */
-int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
+int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset, cl_uint msky_max_offset)
 {
 	TimeHP t0, t1; long long td = 0;
 
@@ -368,7 +368,7 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 	OCL_ASSERT(clSetKernelArg(kernel, 7, sizeof(cl_uint), &ver[3]));
 	OCL_ASSERT(clSetKernelArg(kernel, 8, sizeof(cl_mem), &mem_out));
 	get_hp_time(&t0);
-	int msky3_range = 16384; // "fan out" +/-8192 on msky3
+	int msky3_range = msky_max_offset; // You should in theory, at the most, "fan out" +/-8192 on msky3; that being said, an msky_max_offset is required from the user
 	unsigned i, j, k=0;
 	for (j = msky_offset; j < msky3_range; ++j) {
 		int msky3_offset = (j & 1 ? 1 : -1) * ((j + 1) >> 1);
@@ -429,13 +429,17 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset)
 		tested = out + (1ull << brute_bits) * k;
 	}
 	printf("%.2f seconds, %.2f M/s\n", td / 1000000.0, tested * 1.0 / td);
-
 	clReleaseKernel(kernel);
 	clReleaseMemObject(mem_out);
 	clReleaseProgram(program);
 	clReleaseCommandQueue(command_queue);
 	clReleaseContext(context);
-	return !out;
+	if (!out) { // Could any problems happen because of this?
+		printf("Max offset reached! Brute-forcing will now terminate!\n");
+		return 101; // For lack of a better return code
+	} else {
+		return !out;
+	}
 }
 
 // LFCS brute force, https://gist.github.com/zoogie/4046726878dba89eddfa1fc07c8a27da
@@ -507,7 +511,7 @@ int ocl_brute_lfcs(cl_uint lfcs_template, cl_ushort newflag, const cl_uint *ver,
 			if((int)lfcs_block + fan < lower_bound) continue;//check to see if bf exhausted in - direction, skip iteration if so
 		}
 
-		printf("%d \r", fan);
+		printf("offset: %d \r", fan);
 		fflush(stdout);
 		for (i = 0; i < loops; ++i) {
 			cl_uint lfcs = lfcs_template + fan * 0x10000 + (i << (group_bits - 16));
