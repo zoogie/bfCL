@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdio.h>
-#include <stdint.h>
 #include "utils.h"
 #include "ocl.h"
 #include "ocl_brute.h"
@@ -18,9 +17,9 @@ static inline cl_ushort u16be(const unsigned char *in){
 const char invalid_parameters[] = "invalid parameters\n";
 
 int main(int argc, const char *argv[]) {
-	stop_bfcl = 0;
+	stop_bfcl = 0; // Not really used at the moment
 	seedminer_mode = 0;
-	rws_mode = 0;
+	reduced_work_size_mode = 0;
 	int ret = 0;
 	if (argc == 1) {
 		ret = ocl_test();
@@ -34,11 +33,8 @@ int main(int argc, const char *argv[]) {
 		hex2bytes((unsigned char*)ver, 16, argv[3], 1);
 		hex2bytes((unsigned char*)&msky_offset, 4, argv[4], 1);
 		hex2bytes((unsigned char*)&msky_max_offset, 4, argv[5], 1);
-		if ((argc == 7 || argc == 8) && !strcmp(argv[6], "sws")) {
-			group_bits = 28;
-		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
-			rws_mode = 1;
-			group_bits = 20;
+		if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
+			reduced_work_size_mode = 1;
 		}
 		if (argc == 8 && !strcmp(argv[7], "sm")) {
 			seedminer_mode = 1;
@@ -52,11 +48,8 @@ int main(int argc, const char *argv[]) {
 		hex2bytes((unsigned char*)&newflag, 2, argv[3], 1);
 		hex2bytes((unsigned char*)ver, 8, argv[4], 1);
 		hex2bytes((unsigned char*)&lfcs_offset, 4, argv[5], 1);
-		if ((argc == 7 || argc == 8) && !strcmp(argv[6], "sws")) {
-			group_bits = 28;
-		} else if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
-			rws_mode = 1;
-			group_bits = 20;
+		if ((argc == 7 || argc == 8) && !strcmp(argv[6], "rws")) {
+			reduced_work_size_mode = 1;
 		}
 		if (argc == 8 && !strcmp(argv[7], "sm")) {
 			seedminer_mode = 1;
