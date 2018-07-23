@@ -414,7 +414,7 @@ int ocl_brute_msky(const cl_uint *msky, const cl_uint *ver, cl_uint msky_offset,
 				mdata.seedtype=seedtype;
 				snprintf(filename, 0x100, "msed_data_%08X.bin", rnd);
 				printf("msed_data will also be written to\n%s\n",filename);
-				printf("please share if you can!\n\n");
+				printf("just keep it handy if you don't know what to do with it!\n\n");
 				dump_to_file(filename, &mdata, 12);
 				printf("done.\n");
 				break;
