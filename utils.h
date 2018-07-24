@@ -49,5 +49,3 @@ uint32_t reduced_work_size_mode;
 void real_sleep(int sleep_sec);
 
 void intHandler();
-
-void deprecation_notice_and_input();
