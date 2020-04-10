@@ -88,6 +88,7 @@ void sha256_12(unsigned char *io)
 	W[15] = 0x60u;
 #endif
 
+#pragma unroll 16
 	for (i = 0; i < 16; i += 8)
 	{
 		P(A[0], A[1], A[2], A[3], A[4], A[5], A[6], A[7], W[i + 0], K[i + 0]);
@@ -100,6 +101,7 @@ void sha256_12(unsigned char *io)
 		P(A[1], A[2], A[3], A[4], A[5], A[6], A[7], A[0], W[i + 7], K[i + 7]);
 	}
 
+#pragma unroll 48
 	for (i = 16; i < 64; i += 8)
 	{
 		P(A[0], A[1], A[2], A[3], A[4], A[5], A[6], A[7], R(i + 0), K[i + 0]);
